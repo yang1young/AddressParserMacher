@@ -2,8 +2,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-public class AddressCleanUtils {
+/**
+ * Created by yangqiao on 1/8/14.
+ */
+public class AddressCleanMatchUtils {
 
     private static final int CONVERT_STEP = 65248; // 全角半角转换间隔
 
@@ -76,5 +78,43 @@ public class AddressCleanUtils {
 
     }
 
+
+    public static double getSimilarityOfAddress(String address1, String address2) {
+        return getLikelihoodDistance(address1,address2);
+    }
+
+    /*
+      this method is used to computing string similarity by Levenshtein Distance
+    */
+    public static double getLikelihoodDistance(String source, String target) {
+
+        char[] s = source.toCharArray();
+        char[] t = target.toCharArray();
+        int slen = source.length();
+        int tlen = target.length();
+        int d[][] = new int[slen + 1][tlen + 1];
+        for (int i = 0; i <= slen; i++) {
+            d[i][0] = i;
+        }
+        for (int i = 0; i <= tlen; i++) {
+            d[0][i] = i;
+        }
+        for (int i = 1; i <= slen; i++) {
+            for (int j = 1; j <= tlen; j++) {
+                if (s[i - 1] == t[j - 1]) {
+                    d[i][j] = d[i - 1][j - 1];
+                } else {
+                    int insert = d[i][j - 1] + 1;
+                    int del = d[i - 1][j] + 1;
+                    int modify = d[i - 1][j - 1] + 1;
+                    d[i][j] = Math.min(insert, del) > Math.min(del, modify) ? Math
+                            .min(del, modify) : Math.min(insert, del);
+                }
+            }
+        }
+        double similarPercent = 1 - d[slen][tlen]
+                / (double) Math.max(slen, tlen);
+        return similarPercent;
+    }
 
 }

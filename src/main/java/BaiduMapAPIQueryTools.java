@@ -7,19 +7,22 @@ import com.google.api.client.util.Key;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Created by yangqiao on 1/8/14.
+ */
 
-public class AddressMatchingUtils {
+/**
+ * this is a class using BAIDU map API to get the accurate location
+ * and Latitude and longitude of a blur location
+ */
+public class BaiduMapAPIQueryTools {
     public static final double[] weightList = {1.0};
 
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-    public static double getLikelihood(String ori, String ano) {
-        return 0.0;
-    }
-
-
+    //Latitude and longitude
     public static double[] getLatAndLong(String address) throws IOException {
         HttpRequestFactory requestFactory =
                 HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
@@ -42,7 +45,7 @@ public class AddressMatchingUtils {
 
     }
 
-
+    //get accurate location
     public static String getblurLocation(String address) throws IOException {
         HttpRequestFactory requestFactory =
                 HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
@@ -109,7 +112,7 @@ public class AddressMatchingUtils {
         return originPlace;
     }
 
-
+    //for query
     public static class PlaceQueryURL extends GenericUrl {
         public PlaceQueryURL(String query) {
             super("http://api.map.baidu.com/place/v2/suggestion");
@@ -191,78 +194,4 @@ public class AddressMatchingUtils {
         public double lng;
     }
 
-
-    /*
-       this method is used to computing string similarity by Levenshtein Distance
-     */
-    public static double getLikelihoodDistance(String source, String target) {
-
-        char[] s = source.toCharArray();
-        char[] t = target.toCharArray();
-        int slen = source.length();
-        int tlen = target.length();
-        int d[][] = new int[slen + 1][tlen + 1];
-        for (int i = 0; i <= slen; i++) {
-            d[i][0] = i;
-        }
-        for (int i = 0; i <= tlen; i++) {
-            d[0][i] = i;
-        }
-        for (int i = 1; i <= slen; i++) {
-            for (int j = 1; j <= tlen; j++) {
-                if (s[i - 1] == t[j - 1]) {
-                    d[i][j] = d[i - 1][j - 1];
-                } else {
-                    int insert = d[i][j - 1] + 1;
-                    int del = d[i - 1][j] + 1;
-                    int modify = d[i - 1][j - 1] + 1;
-                    d[i][j] = Math.min(insert, del) > Math.min(del, modify) ? Math
-                            .min(del, modify) : Math.min(insert, del);
-                }
-            }
-        }
-        double similarPercent = 1 - d[slen][tlen]
-                / (double) Math.max(slen, tlen);
-        return similarPercent;
-    }
-}
-
-class AddressInfo {
-    private HashMap<Integer, String> infoList;
-
-    private double Latitude;
-
-    private double longitude;
-
-    public Boolean isSameAddress(AddressInfo another){
-        HashMap<Integer, String> anotherInfo = another.getInfoList();
-        double metrics = 0;
-        Iterator it = infoList.entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry<Integer, String> entry = (Map.Entry) it.next();
-            Integer level = entry.getKey();
-            String addressSplit = entry.getValue();
-            String anotherSplit = anotherInfo.get(level);
-
-            if(anotherSplit == null)
-                continue;
-            if(level < 4 && !addressSplit.equals(anotherSplit))
-                return false;
-            else{
-
-                double likelihood = AddressMatchingUtils.getLikelihood(addressSplit, anotherSplit);
-                metrics += AddressMatchingUtils.weightList[level] * likelihood;
-            }
-        }
-
-        if(metrics < 0.8)
-            return false;
-        else
-            return true;
-    }
-
-    public HashMap<Integer, String> getInfoList() {
-        return infoList;
-    }
 }

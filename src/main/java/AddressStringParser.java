@@ -1,7 +1,9 @@
-import java.io.*;
 import java.util.*;
 import org.apache.log4j.*;
 
+/**
+ * Created by yangqiao on 1/8/14.
+ */
 
 public class AddressStringParser {
     private static final int THRESHOLD = 100;
@@ -131,6 +133,7 @@ public class AddressStringParser {
         }
     }
 
+    // split address according to rules an keyword
     public ArrayList<String> stringAnalyze(String address){
         AddressCode code = new AddressCode(address);
         String numbers = code.getCode();
@@ -173,9 +176,11 @@ public class AddressStringParser {
 
 }
 
+
+
 class AddressMatchingRule {
-    String pattern;
-    int splitIndex;
+    private String pattern;
+    private int splitIndex;
 
     public AddressMatchingRule(String pattern, int index) {
         this.pattern = pattern;
@@ -191,7 +196,9 @@ class AddressMatchingRule {
     }
 }
 
-class AddressMapCreate {
+
+
+class GetLevelInfoOfAddress {
 
     public static final String[] level1 = {"省", "自治区"};
     public static final String[] level2 = {"市"};
@@ -210,7 +217,7 @@ class AddressMapCreate {
     public static final String[] level11 = {"室", "号", "房", "户"};
 
 
-    private static Logger logger = Logger.getLogger(AddressMapCreate.class);
+    private static Logger logger = Logger.getLogger(GetLevelInfoOfAddress.class);
 
     public static HashMap<Integer, String> addressMapCreate(ArrayList<String> location) {
 
@@ -253,7 +260,7 @@ class AddressMapCreate {
     }
 
 
-    public static void printMap(ArrayList<String> location) {
+    public static void printLevelMap(ArrayList<String> location) {
 
         Map<Integer, String> map = addressMapCreate(location);
         if (map != null) {
@@ -268,5 +275,7 @@ class AddressMapCreate {
     }
 
 }
+
+
 
 
