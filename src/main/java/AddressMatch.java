@@ -2,7 +2,7 @@ import org.apache.log4j.Logger;
 import java.util.*;
 
 /**
- * Created by yangqiao on 1/6/17.
+ *this class is used for match whether two address is similar
  */
 class AddressInfo {
     private HashMap<Integer, String> infoList;

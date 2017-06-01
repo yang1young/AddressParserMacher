@@ -8,10 +8,6 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by yangqiao on 1/8/14.
- */
-
-/**
  * this is a class using BAIDU map API to get the accurate location
  * and Latitude and longitude of a blur location
  */

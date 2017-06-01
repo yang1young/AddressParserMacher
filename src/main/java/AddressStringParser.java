@@ -2,9 +2,9 @@ import java.util.*;
 import org.apache.log4j.*;
 
 /**
- * Created by yangqiao on 1/8/14.
+ *http://www.dqxxkx.cn/CN/abstract/abstract23025.shtml#1
+ * parse Address according to this paper
  */
-
 public class AddressStringParser {
     private static final int THRESHOLD = 100;
 
@@ -177,7 +177,10 @@ public class AddressStringParser {
 }
 
 
-
+/**
+ * Class to get the level of Address
+ * return is the map of name and level
+ */
 class AddressMatchingRule {
     private String pattern;
     private int splitIndex;

@@ -3,9 +3,9 @@ To solve the inaccurate address match problem in financial fraud detection
 as for a address ,do address cleaning and normalize,then parse it, using Baidu Map
 API to improve the accuracy
 * Address clean and normalize
-* Address parse
+* Address parse, according to http://www.dqxxkx.cn/CN/abstract/abstract23025.shtml#1
 * Address similarity calculate and matching
-* Baidu API searching 
+* Baidu API searching
 
 ## install guide
 1. apply for Baidu Map API token
